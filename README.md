@@ -19,6 +19,10 @@ To perform a full build use
 ```
 mvn clean package
 ```
+or skip tests
+```
+mvn clean package -Dmaven.test.skip
+```
 You can also run
 ```
 mvn site:site
@@ -47,6 +51,5 @@ If you send coins to that address, it will forward them on to the address you sp
 
 ```
 
-Note that this example app *does not use checkpointing*, so the initial chain sync will be pretty slow. You can make an app that starts up and does the initial sync much faster by including a checkpoints file; see the documentation for
-more info on this technique.
+Note that this example app *does not use checkpointing*, so the initial chain sync will be pretty slow. You can make an app that starts up and does the initial sync much faster by including a checkpoints file; see the documentation for more info on this technique.
 
