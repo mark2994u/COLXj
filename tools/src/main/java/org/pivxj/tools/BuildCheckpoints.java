@@ -63,7 +63,7 @@ public class BuildCheckpoints {
         parser.accepts("help");
         OptionSpec<NetworkEnum> netFlag = parser.accepts("net").withRequiredArg().ofType(NetworkEnum.class).defaultsTo(NetworkEnum.MAIN);
         parser.accepts("peer").withRequiredArg();
-        OptionSpec<Integer> daysFlag = parser.accepts("days").withRequiredArg().ofType(Integer.class).defaultsTo(4);
+        OptionSpec<Integer> daysFlag = parser.accepts("days").withRequiredArg().ofType(Integer.class).defaultsTo(7);
         OptionSet options = parser.parse(args);
 
         if (options.has("help")) {
@@ -87,16 +87,8 @@ public class BuildCheckpoints {
                 suffix = "-regtest";
                 break;
             default:
-                params = TestNet3Params.get();
-                suffix = "-testnet";
-                //throw new RuntimeException("Unreachable.");
+                throw new RuntimeException("Missing argument -net.");
         }
-
-        //params = TestNet3Params.get();
-        //suffix = "-testnet";
-        params = TestNet3Params.get();
-        suffix = "";
-
 
         final InetAddress ipAddress;
         if (options.has("peer")) {
@@ -107,10 +99,11 @@ public class BuildCheckpoints {
                 System.err.println("Could not understand peer domain name/IP address: " + peerFlag + ": " + e.getMessage());
                 System.exit(1);
                 return;
-            }InetAddress.getLocalHost();
+            }
         } else {
-            ipAddress = InetAddress.getByName("202.5.21.31"); // InetAddress.getLocalHost();
+            throw new RuntimeException("Missing argument -peer.");
         }
+
         final PeerAddress peerAddress = new PeerAddress(ipAddress, params.getPort());
 
         // Sorted map of block height to StoredBlock object.
@@ -125,11 +118,11 @@ public class BuildCheckpoints {
         final PeerGroup peerGroup = new PeerGroup(params, chain);
         System.out.println("Connecting to " + peerAddress + "...");
         peerGroup.addAddress(peerAddress);
-        //peerGroup.addAddress(InetAddress.getByName("188.226.228.88"));
+
         long now = new Date().getTime() / 1000;
         peerGroup.setFastCatchupTimeSecs(now);
 
-        final long timeAgo = now - (86400 * 170);//options.valueOf(daysFlag));
+        final long timeAgo = now - (86400 * options.valueOf(daysFlag));
         System.out.println("Checkpointing up to " + Utils.dateTimeFormat(timeAgo * 1000));
 
         chain.addNewBestBlockListener(Threading.SAME_THREAD, new NewBestBlockListener() {
@@ -138,7 +131,6 @@ public class BuildCheckpoints {
                 int height = block.getHeight();
                 System.out.println("block height: "+block.getHeight());
                 if (height % CoinDefinition.getIntervalCheckpoints() == 0 && block.getHeader().getTimeSeconds() <= timeAgo) {
-                //if(height == 201500){
                     System.out.println(String.format("Checkpointing block %s at height %d, time %s",
                             block.getHeader().getHash(), block.getHeight(), Utils.dateTimeFormat(block.getHeader().getTime())));
                     checkpoints.put(height, block);
@@ -164,6 +156,11 @@ public class BuildCheckpoints {
         // Sanity check the created files.
         sanityCheck(plainFile, checkpoints.size());
         sanityCheck(textFile, checkpoints.size());
+
+        // Print to console
+        for (StoredBlock block : checkpoints.values()) {
+            System.out.println(String.format("Checkpoint at height: %d, block hash: %s", block.getHeight(), block.getHeader().getHash().toString()));
+        }
     }
 
     private static void writeBinaryCheckpoints(TreeMap<Integer, StoredBlock> checkpoints, File file) throws Exception {
