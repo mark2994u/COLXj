@@ -133,35 +133,31 @@ public abstract class NetworkParameters {
     //TODO:  put these bytes into the CoinDefinition
     private static Block createGenesis(NetworkParameters n) {
         Block genesisBlock = new Block(n, Block.BLOCK_VERSION_GENESIS);
-        byte[] txBytes = Utils.HEX.decode("01000000010000000000000000000000000000000000000000000000000000000000000000ffffffff5e04ffff001d01044c55552e532e204e657773202620576f726c64205265706f7274204a616e203238203230313620576974682048697320416273656e63652c205472756d7020446f6d696e6174657320416e6f7468657220446562617465ffffffff0100ba1dd205000000434104c10e83b2703ccf322f7dbd62dd5855ac7c10bd055814ce121ba32607d573b8810c02c0582aed05b4deb9c4b77b26d92428c61256cd42774babea0a073b2ed0c9ac00000000");
         Transaction tx = new Transaction(n);
         try {
             // A script containing the difficulty bits and the following message:
-            //
-            //   coin dependent
-            byte[] bytes = Utils.HEX.decode("04ffff001d01044c55552e532e204e657773202620576f726c64205265706f7274204a616e203238203230313620576974682048697320416273656e63652c205472756d7020446f6d696e6174657320416e6f7468657220446562617465");//CoinDefinition.genesisTxInBytes);
+            // 2017-09-21 22:01:04 : Bitcoin Block Hash for Height 486382 : 00000000000000000092d15e5b3e6e8269398a84a60ae5a2dbd4e7f431199d03
+            // coin dependent
+            byte[] bytes = Utils.HEX.decode(CoinDefinition.genesisTxInBytes);
             TransactionInput transactionInput = new TransactionInput(n, tx, bytes);
             transactionInput.setSequenceNumber(4294967295L);
             tx.addInput(transactionInput);
 
-            byte[] pubKey = Utils.HEX.decode("04c10e83b2703ccf322f7dbd62dd5855ac7c10bd055814ce121ba32607d573b8810c02c0582aed05b4deb9c4b77b26d92428c61256cd42774babea0a073b2ed0c9");
+            byte[] pubKey = Utils.HEX.decode(CoinDefinition.genesisTxPubKey);
             ScriptBuilder scriptBuilder = new ScriptBuilder().addChunk(new ScriptChunk(65,pubKey)).op(ScriptOpCodes.OP_CHECKSIG);
             Script script = scriptBuilder.build();
             tx.addOutput(new TransactionOutput(n, tx, Coin.valueOf(CoinDefinition.genesisBlockValue, 0), script.getProgram()));
-
         } catch (Exception e) {
             // Cannot happen.
             throw new RuntimeException(e);
         }
-        //System.out.println(tx.getOutput(0).toString());
         genesisBlock.addTransaction(tx);
-        //System.out.println("genesis tx hash: "+tx.getHashAsString());
-        // genesis tx should be -> 1b2ef6e2f28be914103a277377ae7729dcd125dfeb8bf97bd5964ba72b6dc39b
-        if (!tx.getHashAsString().equals("1b2ef6e2f28be914103a277377ae7729dcd125dfeb8bf97bd5964ba72b6dc39b")) throw new IllegalStateException("invalid genesis tx: "+tx.getHashAsString());
+
+        if (!tx.getHashAsString().equals(CoinDefinition.genesisMerkleRoot))
+            throw new IllegalStateException("invalid genesis tx: "+tx.getHashAsString());
+
         return genesisBlock;
     }
-
-
 
     public static final int TARGET_TIMESPAN = CoinDefinition.TARGET_TIMESPAN;//14 * 24 * 60 * 60;  // 2 weeks per difficulty cycle, on average.
     public static final int TARGET_SPACING = CoinDefinition.TARGET_SPACING;// 10 * 60;  // 10 minutes per block.
