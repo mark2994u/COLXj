@@ -15,9 +15,9 @@
 package wallettemplate;
 
 import javafx.scene.layout.HBox;
-import org.pivxj.core.*;
-import org.pivxj.wallet.SendRequest;
-import org.pivxj.wallet.Wallet;
+import org.colxj.core.*;
+import org.colxj.wallet.SendRequest;
+import org.colxj.wallet.Wallet;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;

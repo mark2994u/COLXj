@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.pivxj</groupId>
-  <artifactId>pivxj-parent</artifactId>
-  <version>0.14.3-12.1</version>
+  <groupId>org.colxj</groupId>
+  <artifactId>colxj-parent</artifactId>
+  <version>1.03</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -27,8 +27,8 @@
     <url>scm:git:https://github.com/bitcoinj/darkcoinj</url>
   </scm>
 
-  <name>pivxj Parent</name>
-  <description>Provides the common configuration for the pivxj modules</description>
+  <name>colxj Parent</name>
+  <description>Provides the common configuration for the colxj modules</description>
   <url>http://dash.org/dashj/</url>
 
   <licenses>
@@ -54,8 +54,8 @@
 
   <distributionManagement>
     <repository>
-      <id>bintray-pivx-Pivxj</id>
-      <name>dash-Pivxj</name>
+      <id>bintray-colx-colxj</id>
+      <name>dash-colxj</name>
       <url>https://api.bintray.com/maven/dash/Dashj/org.dashj/;publish=1</url>
     </repository>
   </distributionManagement>
@@ -103,11 +103,11 @@
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.6</version>
+          <version>3.0.2</version>
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.10.2</version>
+          <version>3.0.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
@@ -216,9 +216,10 @@
                   </plugin>
 
                   <plugin>
+                      <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
                       <groupId>org.apache.maven.plugins</groupId>
                       <artifactId>maven-gpg-plugin</artifactId>
-                      <version>1.5</version>
+                      <version>1.6</version>
                       <executions>
                           <execution>
                               <id>sign-artifacts</id>
