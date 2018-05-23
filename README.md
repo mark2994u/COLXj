@@ -1,6 +1,6 @@
-### Welcome to colxj
+### Welcome to pivxj
 
-The colxj library is a Java implementation of the PIVX protocol, which allows it to maintain a wallet and send/receive transactions without needing a local copy of PIVX Core. It comes with full documentation and some example apps showing how to use it.
+The pivxj library is a Java implementation of the PIVX protocol, which allows it to maintain a wallet and send/receive transactions without needing a local copy of PIVX Core. It comes with full documentation and some example apps showing how to use it.
 
 ### Technologies
 
@@ -22,10 +22,6 @@ mvn clean package
 or skip tests
 ```
 mvn clean package -Dmaven.test.skip
-
-or
-
-mvn clean package -Dmaven.test.skip -Dmaven.javadoc.skip=true
 ```
 You can also run
 ```
@@ -51,7 +47,7 @@ If you send coins to that address, it will forward them on to the address you sp
 
 ```
   cd examples
-  mvn exec:java -Dexec.mainClass=org.colxj.examples.ForwardingService -Dexec.args="<insert a pivx address here>"
+  mvn exec:java -Dexec.mainClass=org.pivxj.examples.ForwardingService -Dexec.args="<insert a pivx address here>"
 
 ```
 
