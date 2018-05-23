@@ -47,7 +47,7 @@ If you send coins to that address, it will forward them on to the address you sp
 
 ```
   cd examples
-  mvn exec:java -Dexec.mainClass=org.pivxj.examples.ForwardingService -Dexec.args="<insert a pivx address here>"
+  mvn exec:java -Dexec.mainClass=org.colxj.examples.ForwardingService -Dexec.args="<insert a pivx address here>"
 
 ```
 
