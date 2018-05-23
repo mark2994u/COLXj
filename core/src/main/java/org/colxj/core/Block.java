@@ -69,9 +69,9 @@ public class Block extends Message {
      * Zerocoin block version
      * Includes an accumulator on the block.
      */
-    public static final long ZEROCOIN_BLOCK_VERSION = 4;
+    public static final long ZEROCOIN_BLOCK_VERSION = Long.MAX_VALUE;  // FIXME when zerocoin get activated
 
-    public static final boolean ACTIVATE_ZEROCOIN = true;
+    public static final boolean ACTIVATE_ZEROCOIN = false;
 
     /**
      * A constant shared by the entire network: how large in bytes a block is allowed to be. One day we may have to
