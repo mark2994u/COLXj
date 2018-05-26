@@ -76,7 +76,7 @@ public class Block extends Message {
     /**
      * A constant shared bys the entire network: how large in bytes a block is allowed to be. One day we may have to
      * upgrade everyone to change this, so Bitcoin can continue to grow. For now it exists as an anti-DoS measure to
-     * avoid somebody creating a titanically huge but valid block and forcing everyone to download/store it forever.
+     * avoid somebody creating a titanically huge but validgit  block and forcing everyone to download/store it forever.
      */
     public static final int MAX_BLOCK_SIZE = CoinDefinition.MAX_BLOCK_SIZE; //1 * 1000 * 1000;
     /**
