@@ -27,7 +27,7 @@
 
   <artifactId>colxj-tools</artifactId>
 
-  <name>dashj Tools</name>
+  <name>colxj Tools</name>
   <description>A collection of useful tools that use the colxj library to perform wallet operations</description>
 
   <build>

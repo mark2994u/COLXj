@@ -27,8 +27,8 @@
 
     <artifactId>colxj-examples</artifactId>
 
-    <name>dashj Examples</name>
-    <description>A collection of examples using the dashj library</description>
+    <name>colxj Examples</name>
+    <description>A collection of examples using the colxj library</description>
 
     <dependencies>
         <dependency>
