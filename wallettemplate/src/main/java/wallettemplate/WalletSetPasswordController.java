@@ -101,11 +101,11 @@ public class WalletSetPasswordController {
         KeyDerivationTasks tasks = new KeyDerivationTasks(scrypt, password, estimatedKeyDerivationTime) {
             @Override
             protected final void onFinish(KeyParameter aesKey, int timeTakenMsec) {
-                // Write the target time to the wallet so we can make the progress bar work when entering the password.
+                // Write the target time to the colx so we can make the progress bar work when entering the password.
                 WalletPasswordController.setTargetTime(Duration.ofMillis(timeTakenMsec));
                 // The actual encryption part doesn't take very long as most private keys are derived on demand.
                 log.info("Key derived, now encrypting");
-                Main.bitcoin.wallet().encrypt(scrypt, aesKey);
+                Main.colx.wallet().encrypt(scrypt, aesKey);
                 log.info("Encryption done");
                 informationalAlert("Wallet encrypted",
                         "You can remove the password at any time from the settings screen.");

@@ -38,16 +38,15 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 import static wallettemplate.utils.GuiUtils.*;
 
 public class Main extends Application {
-    public static NetworkParameters params = MainNetParams.get();
+    public static NetworkParameters params = null;
     public static final String APP_NAME = "WalletTemplate";
-    private static final String WALLET_FILE_NAME = APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-"
-            + params.getPaymentProtocolId();
 
-    public static WalletAppKit bitcoin;
+    public static WalletAppKit colx;
     public static Main instance;
 
     private StackPane uiStack;
@@ -56,9 +55,33 @@ public class Main extends Application {
     public NotificationBarPane notificationBar;
     public Stage mainWindow;
 
+    private String getWalletFileName() {
+        assert params != null;
+        return APP_NAME.replaceAll("[^a-zA-Z0-9.-]", "_") + "-" + params.getPaymentProtocolId();
+    }
+
+    private String getCmdParam(String name, String def) {
+        assert !name.isEmpty();
+
+        Parameters parameters = getParameters();
+        Map<String, String> named = parameters.getNamed();
+        if (!named.containsKey(name))
+            return def;
+        else
+            return named.get(name).toString();
+    }
+
     @Override
     public void start(Stage mainWindow) throws Exception {
         try {
+            // parse command line parameters and initialize colx
+            // --testnet=1
+            if (getCmdParam("testnet", "0").equals("1"))
+                params = TestNet3Params.get();
+            else
+                params = MainNetParams.get();
+
+            // start GUI
             realStart(mainWindow);
         } catch (Throwable e) {
             GuiUtils.crashAlert(e);
@@ -106,7 +129,7 @@ public class Main extends Application {
         // Create the app kit. It won't do any heavyweight initialization until after we start it.
         setupWalletKit(null);
 
-        if (bitcoin.isChainFileLocked()) {
+        if (colx.isChainFileLocked()) {
             informationalAlert("Already running", "This application is already running and cannot be started twice.");
             Platform.exit();
             return;
@@ -116,42 +139,35 @@ public class Main extends Application {
 
         WalletSetPasswordController.estimateKeyDerivationTimeMsec();
 
-        bitcoin.addListener(new Service.Listener() {
+        colx.addListener(new Service.Listener() {
             @Override
             public void failed(Service.State from, Throwable failure) {
                 GuiUtils.crashAlert(failure);
             }
         }, Platform::runLater);
-        bitcoin.startAsync();
+        colx.startAsync();
 
-        scene.getAccelerators().put(KeyCombination.valueOf("Shortcut+F"), () -> bitcoin.peerGroup().getDownloadPeer().close());
+        scene.getAccelerators().put(KeyCombination.valueOf("Shortcut+F"), () -> colx.peerGroup().getDownloadPeer().close());
     }
 
     public void setupWalletKit(@Nullable DeterministicSeed seed) {
         // If seed is non-null it means we are restoring from backup.
-        bitcoin = new WalletAppKit(params, new File("."), WALLET_FILE_NAME) {
+        colx = new WalletAppKit(params, new File("."), getWalletFileName()) {
             @Override
             protected void onSetupCompleted() {
                 // Don't make the user wait for confirmations for now, as the intention is they're sending it
                 // their own money!
-                bitcoin.wallet().allowSpendingUnconfirmedTransactions();
+                colx.wallet().allowSpendingUnconfirmedTransactions();
                 Platform.runLater(controller::onBitcoinSetup);
             }
         };
-        // Now configure and start the appkit. This will take a second or two - we could show a temporary splash screen
-        // or progress widget to keep the user engaged whilst we initialise, but we don't.
-        if (params == RegTestParams.get()) {
-            bitcoin.connectToLocalHost();   // You should run a regtest mode bitcoind locally.
-        } else if (params == TestNet3Params.get()) {
-            // As an example!
-            bitcoin.useTor();
-            // bitcoin.setDiscovery(new HttpDiscovery(params, URI.create("http://localhost:8080/peers"), ECKey.fromPublicOnly(BaseEncoding.base16().decode("02cba68cfd0679d10b186288b75a59f9132b1b3e222f6332717cb8c4eb2040f940".toUpperCase()))));
-        }
-        bitcoin.setDownloadListener(controller.progressBarUpdater())
+
+        colx.setDownloadListener(controller.progressBarUpdater())
                .setBlockingStartup(false)
                .setUserAgent(APP_NAME, "1.0");
+
         if (seed != null)
-            bitcoin.restoreWalletFromSeed(seed);
+            colx.restoreWalletFromSeed(seed);
     }
 
     private Node stopClickPane = new Pane();
@@ -245,8 +261,8 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
-        bitcoin.stopAsync();
-        bitcoin.awaitTerminated();
+        colx.stopAsync();
+        colx.awaitTerminated();
         // Forcibly terminate the JVM because Orchid likes to spew non-daemon threads everywhere.
         Runtime.getRuntime().exit(0);
     }

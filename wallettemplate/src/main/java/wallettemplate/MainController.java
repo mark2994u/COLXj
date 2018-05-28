@@ -36,7 +36,7 @@ import wallettemplate.utils.BitcoinUIModel;
 import wallettemplate.utils.easing.EasingMode;
 import wallettemplate.utils.easing.ElasticInterpolator;
 
-import static wallettemplate.Main.bitcoin;
+import static wallettemplate.Main.colx;
 
 /**
  * Gets created auto-magically by FXMLLoader via reflection. The widget fields are set to the GUI controls they're named
@@ -57,13 +57,13 @@ public class MainController {
     }
 
     public void onBitcoinSetup() {
-        model.setWallet(bitcoin.wallet());
+        model.setWallet(colx.wallet());
         addressControl.addressProperty().bind(model.addressProperty());
         balance.textProperty().bind(EasyBind.map(model.balanceProperty(), coin -> MonetaryFormat.BTC.noCode().format(coin).toString()));
-        // Don't let the user click send money when the wallet is empty.
+        // Don't let the user click send money when the colx is empty.
         sendMoneyOutBtn.disableProperty().bind(model.balanceProperty().isEqualTo(Coin.ZERO));
 
-        TorClient torClient = Main.bitcoin.peerGroup().getTorClient();
+        TorClient torClient = Main.colx.peerGroup().getTorClient();
         if (torClient != null) {
             SimpleDoubleProperty torProgress = new SimpleDoubleProperty(-1);
             String torMsg = "Initialising Tor";

@@ -99,9 +99,13 @@ public class CoinDefinition {
     public static final String genesisTxInBytes = "04ffff001d01044c7d323031372d30392d32312032323a30313a3034203a20426974636f696e20426c6f636b204861736820666f722048656967687420343836333832203a2030303030303030303030303030303030303039326431356535623365366538323639333938613834613630616535613264626434653766343331313939643033";//"04ffff001d01044c5957697265642030392f4a616e2f3230313420546865204772616e64204578706572696d656e7420476f6573204c6976653a204f76657273746f636b2e636f6d204973204e6f7720416363657074696e6720426974636f696e73";
     public static final String genesisTxPubKey = "04c10e83b2703ccf322f7dbd62dd5855ac7c10bd055814ce121ba32607d573b8810c02c0582aed05b4deb9c4b77b26d92428c61256cd42774babea0a073b2ed0c9";
 
+    public static BigInteger proofOfWorkLimit = Utils.decodeCompactBits(0x1e0fffffL);  //chainparams.cpp bnProofOfWorkLimit
+
     //net.cpp strDNSSeed
     public static final String[] dnsSeeds = new String[] {
-            "seed.colxt.net", "seed.colossusxt.org", "seed.colossuscoinxt.org"
+            "seed.colossuscoinxt.org",
+            "seed.colossusxt.org",
+            "seed.colxt.net"
     };
 
     public static final int minBroadcastConnections = 3;   //0 for default; we need more peers.
@@ -130,7 +134,7 @@ public class CoinDefinition {
 
     public static int subsidyDecreaseBlockCount = 210000;     //main.cpp GetBlockValue(height, fee)
 
-    public static BigInteger proofOfWorkLimit = Utils.decodeCompactBits(0x1e0fffffL);  //main.cpp bnProofOfWorkLimit (~uint256(0) >> 20); // digitalcoin: starting difficulty is 1 / 2^12
+    public static BigInteger testnetProofOfWorkLimit = Utils.decodeCompactBits(0x207fffffL);  //chainparams.cpp bnProofOfWorkLimit
 
     static public String[] testnetDnsSeeds = new String[] {
             "testseed.colossuscoinxt.org"
@@ -142,7 +146,7 @@ public class CoinDefinition {
     /** The string returned by getId() for the main, production network where people trade things. */
     public static final String ID_MAINNET = "org.colx.production";
     /** The string returned by getId() for the testnet. */
-    public static final String ID_TESTNET = "org.pivx.test";
+    public static final String ID_TESTNET = "org.colx.test";
     /** Unit test network. */
     public static final String ID_UNITTESTNET = "com.google.pivx.unittest";
 

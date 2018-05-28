@@ -59,7 +59,7 @@ public class WalletSettingsController {
 
     // Note: NOT called by FXMLLoader!
     public void initialize(@Nullable KeyParameter aesKey) {
-        DeterministicSeed seed = Main.bitcoin.wallet().getKeyChainSeed();
+        DeterministicSeed seed = Main.colx.wallet().getKeyChainSeed();
         if (aesKey == null) {
             if (seed.isEncrypted()) {
                 log.info("Wallet is encrypted, requesting password first.");
@@ -69,12 +69,12 @@ public class WalletSettingsController {
             }
         } else {
             this.aesKey = aesKey;
-            seed = seed.decrypt(checkNotNull(Main.bitcoin.wallet().getKeyCrypter()), "", aesKey);
-            // Now we can display the wallet seed as appropriate.
+            seed = seed.decrypt(checkNotNull(Main.colx.wallet().getKeyCrypter()), "", aesKey);
+            // Now we can display the colx seed as appropriate.
             passwordButton.setText("Remove password");
         }
 
-        // Set the date picker to show the birthday of this wallet.
+        // Set the date picker to show the birthday of this colx.
         Instant creationTime = Instant.ofEpochSecond(seed.getCreationTimeSeconds());
         LocalDate origDate = creationTime.atZone(ZoneId.systemDefault()).toLocalDate();
         datePicker.setValue(origDate);
@@ -106,7 +106,7 @@ public class WalletSettingsController {
                 , /* depends on */ datePicker.valueProperty())
         );
 
-        // Don't let the user click restore if the words area contains the current wallet words, or are an invalid set,
+        // Don't let the user click restore if the words area contains the current colx words, or are an invalid set,
         // or if the date field isn't set, or if it's in the future.
         restoreButton.disableProperty().bind(
                 or(
@@ -145,11 +145,11 @@ public class WalletSettingsController {
     }
 
     public void restoreClicked(ActionEvent event) {
-        // Don't allow a restore unless this wallet is presently empty. We don't want to end up with two wallets, too
+        // Don't allow a restore unless this colx is presently empty. We don't want to end up with two wallets, too
         // much complexity, even though WalletAppKit will keep the current one as a backup file in case of disaster.
-        if (Main.bitcoin.wallet().getBalance().value > 0) {
+        if (Main.colx.wallet().getBalance().value > 0) {
             informationalAlert("Wallet is not empty",
-                    "You must empty this wallet out before attempting to restore an older one, as mixing wallets " +
+                    "You must empty this colx out before attempting to restore an older one, as mixing wallets " +
                             "together can lead to invalidated backups.");
             return;
         }
@@ -157,26 +157,26 @@ public class WalletSettingsController {
         if (aesKey != null) {
             // This is weak. We should encrypt the new seed here.
             informationalAlert("Wallet is encrypted",
-                    "After restore, the wallet will no longer be encrypted and you must set a new password.");
+                    "After restore, the colx will no longer be encrypted and you must set a new password.");
         }
 
-        log.info("Attempting wallet restore using seed '{}' from date {}", wordsArea.getText(), datePicker.getValue());
+        log.info("Attempting colx restore using seed '{}' from date {}", wordsArea.getText(), datePicker.getValue());
         informationalAlert("Wallet restore in progress",
-                "Your wallet will now be resynced from the Bitcoin network. This can take a long time for old wallets.");
+                "Your colx will now be resynced from the Bitcoin network. This can take a long time for old wallets.");
         overlayUI.done();
         Main.instance.controller.restoreFromSeedAnimation();
 
         long birthday = datePicker.getValue().atStartOfDay().toEpochSecond(ZoneOffset.UTC);
         DeterministicSeed seed = new DeterministicSeed(Splitter.on(' ').splitToList(wordsArea.getText()), null, "", birthday);
         // Shut down colxj and restart it with the new seed.
-        Main.bitcoin.addListener(new Service.Listener() {
+        Main.colx.addListener(new Service.Listener() {
             @Override
             public void terminated(Service.State from) {
                 Main.instance.setupWalletKit(seed);
-                Main.bitcoin.startAsync();
+                Main.colx.startAsync();
             }
         }, Platform::runLater);
-        Main.bitcoin.stopAsync();
+        Main.colx.stopAsync();
     }
 
 
@@ -184,7 +184,7 @@ public class WalletSettingsController {
         if (aesKey == null) {
             Main.instance.overlayUI("wallet_set_password.fxml");
         } else {
-            Main.bitcoin.wallet().decrypt(aesKey);
+            Main.colx.wallet().decrypt(aesKey);
             informationalAlert("Wallet decrypted", "A password will no longer be required to send money or edit settings.");
             passwordButton.setText("Set password");
             aesKey = null;

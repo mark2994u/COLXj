@@ -46,7 +46,7 @@ public class TestNet3Params extends AbstractBitcoinNetParams {
         interval = INTERVAL;
         targetTimespan = TARGET_TIMESPAN;
 
-        maxTarget = CoinDefinition.proofOfWorkLimit;//Utils.decodeCompactBits(0x1d00ffffL);
+        maxTarget = CoinDefinition.testnetProofOfWorkLimit;
         port = CoinDefinition.TestPort;
         addressHeader = CoinDefinition.testnetAddressHeader;
         p2shHeader = CoinDefinition.testnetp2shHeader;

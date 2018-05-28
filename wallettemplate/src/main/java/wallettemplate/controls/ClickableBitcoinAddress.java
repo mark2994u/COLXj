@@ -49,7 +49,7 @@ import java.net.URI;
 import static javafx.beans.binding.Bindings.convert;
 
 /**
- * A custom control that implements a clickable, copyable Bitcoin address. Clicking it opens a local wallet app. The
+ * A custom control that implements a clickable, copyable Bitcoin address. Clicking it opens a local colx app. The
  * address looks like a blue hyperlink. Next to it there are two icons, one that copies to the clipboard and another
  * that shows a QRcode.
  */
@@ -120,7 +120,7 @@ public class ClickableBitcoinAddress extends AnchorPane {
             try {
                 Desktop.getDesktop().browse(URI.create(uri()));
             } catch (IOException e) {
-                GuiUtils.informationalAlert("Opening wallet app failed", "Perhaps you don't have one installed?");
+                GuiUtils.informationalAlert("Opening colx app failed", "Perhaps you don't have one installed?");
             }
         }
     }

@@ -50,7 +50,7 @@ public class SendMoneyController {
 
     // Called by FXMLLoader
     public void initialize() {
-        Coin balance = Main.bitcoin.wallet().getBalance();
+        Coin balance = Main.colx.wallet().getBalance();
         checkState(!balance.isZero());
         new BitcoinAddressValidator(Main.params, address, sendBtn);
         new TextFieldValidator(amountEdit, text ->
@@ -68,12 +68,12 @@ public class SendMoneyController {
             Coin amount = Coin.parseCoin(amountEdit.getText());
             Address destination = Address.fromBase58(Main.params, address.getText());
             SendRequest req;
-            if (amount.equals(Main.bitcoin.wallet().getBalance()))
+            if (amount.equals(Main.colx.wallet().getBalance()))
                 req = SendRequest.emptyWallet(destination);
             else
                 req = SendRequest.to(destination, amount);
             req.aesKey = aesKey;
-            sendResult = Main.bitcoin.wallet().sendCoins(req);
+            sendResult = Main.colx.wallet().sendCoins(req);
             Futures.addCallback(sendResult.broadcastComplete, new FutureCallback<Transaction>() {
                 @Override
                 public void onSuccess(@Nullable Transaction result) {
@@ -83,7 +83,7 @@ public class SendMoneyController {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    // We died trying to empty the wallet.
+                    // We died trying to empty the colx.
                     crashAlert(t);
                 }
             });
@@ -97,8 +97,8 @@ public class SendMoneyController {
             ((HBox)btcLabel.getParent()).getChildren().remove(btcLabel);
             updateTitleForBroadcast();
         } catch (InsufficientMoneyException e) {
-            informationalAlert("Could not empty the wallet",
-                    "You may have too little money left in the wallet to make a transaction.");
+            informationalAlert("Could not empty the colx",
+                    "You may have too little money left in the colx to make a transaction.");
             overlayUI.done();
         } catch (ECKey.KeyIsEncryptedException e) {
             askForPasswordAndRetry();
