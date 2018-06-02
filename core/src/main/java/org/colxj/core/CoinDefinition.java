@@ -57,9 +57,10 @@ public class CoinDefinition {
     public static final int spendableCoinbaseDepth = 90; //chainparams.h: static const int COINBASE_MATURITY
     public static final long MAX_COINS = 20000000000l; //chainparams.h:  MAX_MONEY
 
-    public static final long DEFAULT_MIN_TX_FEE = 10000;   // MIN_TX_FEE
-    public static final long DUST_LIMIT = 30000; //main.h CTransaction::GetMinFee        0.01 coins
-    public static final long INSTANTX_FEE = 100000; //0.001 DASH (updated for 12.1)
+    public static final long DEFAULT_TX_FEE = 10 * 100 * 1000000;   // main.h -> minRelayTxFee, 10 COLX per kb
+    public static final long DEFAULT_MIN_TX_FEE = 1000000;   // absolute value 0.01 COLX
+    public static final long DUST_LIMIT = 6 * 100 * 1000000; // transaction.h -> IsDust
+    public static final long INSTANTX_FEE = 1000000; // 0.01 COLX
     public static final boolean feeCanBeRaised = false;
 
     //
@@ -137,7 +138,8 @@ public class CoinDefinition {
     public static BigInteger testnetProofOfWorkLimit = Utils.decodeCompactBits(0x207fffffL);  //chainparams.cpp bnProofOfWorkLimit
 
     static public String[] testnetDnsSeeds = new String[] {
-            "testseed.colossuscoinxt.org"
+            "testseed.colxt.net",
+            "192.168.0.100"
     };
     //from main.h: CAlert::CheckSignature
     public static final String SATOSHI_KEY = "0000098d3ba6ba6e7423fa5cbd6a89e0a9a5348f88d332b44a5cb1a8b7ed2c1eaa335fc8dc4f012cb8241cc0bdafd6ca70c5f5448916e4e6f511bcd746ed57dc50";
