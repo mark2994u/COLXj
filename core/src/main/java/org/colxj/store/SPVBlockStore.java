@@ -162,7 +162,7 @@ public class SPVBlockStore implements BlockStore {
         lock.lock();
         try {
             int cursor = getRingCursor(buffer);
-            if (cursor == getFileSize()) {
+            if (cursor + RECORD_SIZE_ZEROCOIN > getFileSize()) {
                 // Wrapped around.
                 cursor = FILE_PROLOGUE_BYTES;
             }
