@@ -495,8 +495,8 @@ public class Peer extends PeerSocketHandler {
         }
 
         // No further communication is possible until version handshake is complete.
-        if (!(m instanceof VersionMessage || m instanceof VersionAck
-                || (versionHandshakeFuture.isDone() && !versionHandshakeFuture.isCancelled()))) {
+        if (!(m instanceof VersionMessage || m instanceof VersionAck || m instanceof GetSporksMessage ||
+                (versionHandshakeFuture.isDone() && !versionHandshakeFuture.isCancelled()))) {
             String reason = "  " + ((m instanceof RejectMessage) ? ((RejectMessage) m).getReasonString() : "");
             throw new ProtocolException(
                     "Received " + m.getClass().getSimpleName() + " before version handshake is complete."+ reason);
