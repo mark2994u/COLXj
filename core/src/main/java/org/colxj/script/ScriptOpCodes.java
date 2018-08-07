@@ -159,6 +159,11 @@ public class ScriptOpCodes {
     public static final int OP_NOP8 = 0xb7;
     public static final int OP_NOP9 = 0xb8;
     public static final int OP_NOP10 = 0xb9;
+
+    // zerocoin
+    public static final int OP_ZEROCOINMINT = 0xc1;
+    public static final int OP_ZEROCOINSPEND = 0xc2;
+
     public static final int OP_INVALIDOPCODE = 0xff;
 
     private static final Map<Integer, String> opCodeMap = ImmutableMap.<Integer, String>builder()
@@ -272,7 +277,9 @@ public class ScriptOpCodes {
         .put(OP_NOP7, "NOP7")
         .put(OP_NOP8, "NOP8")
         .put(OP_NOP9, "NOP9")
-        .put(OP_NOP10, "NOP10").build();
+        .put(OP_NOP10, "NOP10")
+        .put(OP_ZEROCOINMINT, "OP_ZEROCOINMINT")
+        .put(OP_ZEROCOINSPEND, "OP_ZEROCOINSPEND").build();
 
     private static final Map<String, Integer> opCodeNameMap = ImmutableMap.<String, Integer>builder()
         .put("0", OP_0)
@@ -386,7 +393,9 @@ public class ScriptOpCodes {
         .put("NOP7", OP_NOP7)
         .put("NOP8", OP_NOP8)
         .put("NOP9", OP_NOP9)
-        .put("NOP10", OP_NOP10).build();
+        .put("NOP10", OP_NOP10)
+        .put("OP_ZEROCOINMINT", OP_ZEROCOINMINT)
+        .put("OP_ZEROCOINSPEND", OP_ZEROCOINSPEND).build();
 
     /**
      * Converts the given OpCode into a string (eg "0", "PUSHDATA", or "NON_OP(10)")

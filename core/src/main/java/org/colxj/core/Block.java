@@ -69,16 +69,16 @@ public class Block extends Message {
      * Zerocoin block version
      * Includes an accumulator on the block.
      */
-    public static final long ZEROCOIN_BLOCK_VERSION = Long.MAX_VALUE; // unreachable until ZEROCOIN release
+    public static final long ZEROCOIN_BLOCK_VERSION = 5;
 
-    public static final boolean ACTIVATE_ZEROCOIN = false;
+    public static final boolean ACTIVATE_ZEROCOIN = true;
 
     /**
      * A constant shared bys the entire network: how large in bytes a block is allowed to be. One day we may have to
      * upgrade everyone to change this, so Bitcoin can continue to grow. For now it exists as an anti-DoS measure to
      * avoid somebody creating a titanically huge but validgit  block and forcing everyone to download/store it forever.
      */
-    public static final int MAX_BLOCK_SIZE = CoinDefinition.MAX_BLOCK_SIZE; //1 * 1000 * 1000;
+    public static final int MAX_BLOCK_SIZE = CoinDefinition.MAX_BLOCK_SIZE;
     /**
      * A "sigop" is a signature verification operation. Because they're expensive we also impose a separate limit on
      * the number in a block to prevent somebody mining a huge block that has way more sigops than normal, so is very

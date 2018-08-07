@@ -66,11 +66,11 @@ public class CoinDefinition {
     //
     // PIVX 0.12
     //
-    public static final int PROTOCOL_VERSION = 70810;          //version.h PROTOCOL_VERSION
+    public static final int PROTOCOL_VERSION = 70910;          //version.h PROTOCOL_VERSION
     public static final int MIN_PROTOCOL_VERSION = 70810;        //version.h MIN_PROTO_VERSION
 
-    public static final int BLOCK_CURRENTVERSION = 3;   //CBlock::CURRENT_VERSION
-    public static final int MAX_BLOCK_SIZE = 1 * 1000 * 1000;
+    public static final int BLOCK_CURRENTVERSION = 5;   //CBlock::CURRENT_VERSION
+    public static final int MAX_BLOCK_SIZE = 2 * 1000 * 1000;
 
     public static final boolean supportsBloomFiltering = true; //Requires PROTOCOL_VERSION 70000 in the client
 
@@ -78,8 +78,8 @@ public class CoinDefinition {
     public static final int TestPort = 51374;     //chainparams.h GetDefaultPort(testnet=true)
 
     /** Zerocoin starting block height, unreachable for now */
-    public static final long TESTNET_ZEROCOIN_STARTING_BLOCK_HEIGHT = Long.MAX_VALUE;
-    public static final long MAINNET_ZEROCOIN_STARTING_BLOCK_HEIGHT = Long.MAX_VALUE;
+    public static final long TESTNET_ZEROCOIN_STARTING_BLOCK_HEIGHT = 53000;
+    public static final long MAINNET_ZEROCOIN_STARTING_BLOCK_HEIGHT = 500000;
 
     //
     //  Production
@@ -138,9 +138,9 @@ public class CoinDefinition {
     public static BigInteger testnetProofOfWorkLimit = Utils.decodeCompactBits(0x207fffffL);  //chainparams.cpp bnProofOfWorkLimit
 
     static public String[] testnetDnsSeeds = new String[] {
-            "testseed.colxt.net",
-            "192.168.0.100"
+            "colx.home"
     };
+
     //from main.h: CAlert::CheckSignature
     public static final String SATOSHI_KEY = "0000098d3ba6ba6e7423fa5cbd6a89e0a9a5348f88d332b44a5cb1a8b7ed2c1eaa335fc8dc4f012cb8241cc0bdafd6ca70c5f5448916e4e6f511bcd746ed57dc50";
     public static final String TESTNET_SATOSHI_KEY = "000010e83b2703ccf322f7dbd62dd5855ac7c10bd055814ce121ba32607d573b8810c02c0582aed05b4deb9c4b77b26d92428c61256cd42774babea0a073b2ed0c9";

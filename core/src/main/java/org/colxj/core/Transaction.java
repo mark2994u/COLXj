@@ -608,7 +608,10 @@ public class Transaction extends ChildMessage {
      * position in a block but by the data in the inputs.
      */
     public boolean isCoinBase() {
-        return inputs.size() == 1 && inputs.get(0).isCoinBase();
+        boolean a = inputs.size() == 1;
+        boolean b = inputs.get(0).isCoinBase();
+        boolean c = inputs.get(0).isZeroCoinSpend();
+        return a && b && !c;
     }
 
     /**
@@ -1247,7 +1250,7 @@ public class Transaction extends ChildMessage {
         Coin valueOut = Coin.ZERO;
         HashSet<TransactionOutPoint> outpoints = new HashSet<TransactionOutPoint>();
         for (TransactionInput input : inputs) {
-            if (outpoints.contains(input.getOutpoint())) {
+            if (outpoints.contains(input.getOutpoint()) && !input.isZeroCoinSpend()) {
                 log.error("Duplicated output in a transaction "+toString());
                 throw new VerificationException.DuplicatedOutPoint();
             }
@@ -1272,7 +1275,6 @@ public class Transaction extends ChildMessage {
             if (scriptBytes.length < 2 || scriptBytes.length > 100) {
                 log.info("#### Invalid transaction, "+toString());
                 log.info("### invalid script: "+ Hex.toHexString(scriptBytes));
-                //log.info("#### Invalid transaction script, "+inputs.get(0).toString());
                 throw new VerificationException.CoinbaseScriptSizeOutOfRange();
             }
         } else {
@@ -1303,8 +1305,9 @@ public class Transaction extends ChildMessage {
      */
     public boolean isOptInFullRBF() {
         for (TransactionInput input : getInputs())
-            if (input.isOptInFullRBF())
+            if (input.isOptInFullRBF() && !input.isZeroCoinSpend())
                 return true;
+
         return false;
     }
 

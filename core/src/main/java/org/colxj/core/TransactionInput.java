@@ -18,6 +18,7 @@
 package org.colxj.core;
 
 import org.colxj.script.Script;
+import org.colxj.script.ScriptOpCodes;
 import org.colxj.wallet.DefaultRiskAnalysis;
 import org.colxj.wallet.KeyBag;
 import org.colxj.wallet.RedeemData;
@@ -147,11 +148,15 @@ public class TransactionInput extends ChildMessage {
         Utils.uint32ToByteStreamLE(sequence, stream);
     }
 
+    public boolean isZeroCoinSpend() {
+        return scriptBytes.length > 0 && scriptBytes[0] == (byte) ScriptOpCodes.OP_ZEROCOINSPEND;
+    }
+
     /**
      * Coinbase transactions have special inputs with hashes of zero. If this is such an input, returns true.
      */
     public boolean isCoinBase() {
-        return outpoint.getHash().equals(Sha256Hash.ZERO_HASH) &&
+        return !isZeroCoinSpend() && outpoint.getHash().equals(Sha256Hash.ZERO_HASH) &&
                 (outpoint.getIndex() & 0xFFFFFFFFL) == 0xFFFFFFFFL;  // -1 but all is serialized to the wire as unsigned int.
     }
 
