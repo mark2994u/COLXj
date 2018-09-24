@@ -78,8 +78,8 @@ public class CoinDefinition {
     public static final int TestPort = 51374;     //chainparams.h GetDefaultPort(testnet=true)
 
     /** Zerocoin starting block height, unreachable for now */
-    public static final long TESTNET_ZEROCOIN_STARTING_BLOCK_HEIGHT = 201
-    public static final long MAINNET_ZEROCOIN_STARTING_BLOCK_HEIGHT = 201
+    public static final long TESTNET_ZEROCOIN_STARTING_BLOCK_HEIGHT = 201;
+    public static final long MAINNET_ZEROCOIN_STARTING_BLOCK_HEIGHT = 201;
 
     //
     //  Production
