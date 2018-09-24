@@ -20,8 +20,8 @@ import javafx.event.*;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import org.colxj.crypto.*;
-import org.colxj.wallet.*;
+import org.ccbcj.crypto.*;
+import org.ccbcj.wallet.*;
 import org.slf4j.*;
 import org.spongycastle.crypto.params.*;
 import wallettemplate.utils.*;
@@ -101,11 +101,11 @@ public class WalletSetPasswordController {
         KeyDerivationTasks tasks = new KeyDerivationTasks(scrypt, password, estimatedKeyDerivationTime) {
             @Override
             protected final void onFinish(KeyParameter aesKey, int timeTakenMsec) {
-                // Write the target time to the colx so we can make the progress bar work when entering the password.
+                // Write the target time to the ccbc so we can make the progress bar work when entering the password.
                 WalletPasswordController.setTargetTime(Duration.ofMillis(timeTakenMsec));
                 // The actual encryption part doesn't take very long as most private keys are derived on demand.
                 log.info("Key derived, now encrypting");
-                Main.colx.wallet().encrypt(scrypt, aesKey);
+                Main.ccbc.wallet().encrypt(scrypt, aesKey);
                 log.info("Encryption done");
                 informationalAlert("Wallet encrypted",
                         "You can remove the password at any time from the settings screen.");

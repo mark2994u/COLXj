@@ -14,8 +14,8 @@
 
 package wallettemplate.controls;
 
-import org.colxj.core.Address;
-import org.colxj.uri.PivxURI;
+import org.ccbcj.core.Address;
+import org.ccbcj.uri.PivxURI;
 import de.jensd.fx.fontawesome.AwesomeDude;
 import de.jensd.fx.fontawesome.AwesomeIcon;
 import javafx.beans.binding.StringExpression;
@@ -49,7 +49,7 @@ import java.net.URI;
 import static javafx.beans.binding.Bindings.convert;
 
 /**
- * A custom control that implements a clickable, copyable Bitcoin address. Clicking it opens a local colx app. The
+ * A custom control that implements a clickable, copyable Bitcoin address. Clicking it opens a local ccbc app. The
  * address looks like a blue hyperlink. Next to it there are two icons, one that copies to the clipboard and another
  * that shows a QRcode.
  */
@@ -120,7 +120,7 @@ public class ClickableBitcoinAddress extends AnchorPane {
             try {
                 Desktop.getDesktop().browse(URI.create(uri()));
             } catch (IOException e) {
-                GuiUtils.informationalAlert("Opening colx app failed", "Perhaps you don't have one installed?");
+                GuiUtils.informationalAlert("Opening ccbc app failed", "Perhaps you don't have one installed?");
             }
         }
     }

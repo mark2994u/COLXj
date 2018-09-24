@@ -2,8 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.colxj</groupId>
-  <artifactId>colxj-parent</artifactId>
+  <groupId>org.ccbcj</groupId>
+  <artifactId>ccbcj-parent</artifactId>
   <version>1.03</version>
   <packaging>pom</packaging>
 
@@ -27,8 +27,8 @@
     <url>scm:git:https://github.com/bitcoinj/darkcoinj</url>
   </scm>
 
-  <name>colxj Parent</name>
-  <description>Provides the common configuration for the colxj modules</description>
+  <name>ccbcj Parent</name>
+  <description>Provides the common configuration for the ccbcj modules</description>
   <url>https://colossusxt.io</url>
 
   <licenses>
@@ -54,8 +54,8 @@
 
   <distributionManagement>
     <repository>
-      <id>bintray-colx-colxj</id>
-      <name>dash-colxj</name>
+      <id>bintray-ccbc-ccbcj</id>
+      <name>dash-ccbcj</name>
       <url>https://api.bintray.com/maven/dash/Dashj/org.dashj/;publish=1</url>
     </repository>
   </distributionManagement>

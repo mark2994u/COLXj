@@ -14,9 +14,9 @@
 
 package wallettemplate;
 
-import org.colxj.core.listeners.DownloadProgressTracker;
-import org.colxj.core.Coin;
-import org.colxj.utils.MonetaryFormat;
+import org.ccbcj.core.listeners.DownloadProgressTracker;
+import org.ccbcj.core.Coin;
+import org.ccbcj.utils.MonetaryFormat;
 import com.subgraph.orchid.TorClient;
 import com.subgraph.orchid.TorInitializationListener;
 import javafx.animation.FadeTransition;
@@ -36,7 +36,7 @@ import wallettemplate.utils.BitcoinUIModel;
 import wallettemplate.utils.easing.EasingMode;
 import wallettemplate.utils.easing.ElasticInterpolator;
 
-import static wallettemplate.Main.colx;
+import static wallettemplate.Main.ccbc;
 
 /**
  * Gets created auto-magically by FXMLLoader via reflection. The widget fields are set to the GUI controls they're named
@@ -57,13 +57,13 @@ public class MainController {
     }
 
     public void onBitcoinSetup() {
-        model.setWallet(colx.wallet());
+        model.setWallet(ccbc.wallet());
         addressControl.addressProperty().bind(model.addressProperty());
         balance.textProperty().bind(EasyBind.map(model.balanceProperty(), coin -> MonetaryFormat.BTC.noCode().format(coin).toString()));
-        // Don't let the user click send money when the colx is empty.
+        // Don't let the user click send money when the ccbc is empty.
         sendMoneyOutBtn.disableProperty().bind(model.balanceProperty().isEqualTo(Coin.ZERO));
 
-        TorClient torClient = Main.colx.peerGroup().getTorClient();
+        TorClient torClient = Main.ccbc.peerGroup().getTorClient();
         if (torClient != null) {
             SimpleDoubleProperty torProgress = new SimpleDoubleProperty(-1);
             String torMsg = "Initialising Tor";

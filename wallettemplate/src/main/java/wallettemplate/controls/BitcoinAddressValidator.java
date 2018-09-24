@@ -14,9 +14,9 @@
 
 package wallettemplate.controls;
 
-import org.colxj.core.Address;
-import org.colxj.core.AddressFormatException;
-import org.colxj.core.NetworkParameters;
+import org.ccbcj.core.Address;
+import org.ccbcj.core.AddressFormatException;
+import org.ccbcj.core.NetworkParameters;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import wallettemplate.utils.TextFieldValidator;

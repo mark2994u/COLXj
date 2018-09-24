@@ -15,9 +15,9 @@
 package wallettemplate;
 
 import javafx.scene.layout.HBox;
-import org.colxj.core.*;
-import org.colxj.wallet.SendRequest;
-import org.colxj.wallet.Wallet;
+import org.ccbcj.core.*;
+import org.ccbcj.wallet.SendRequest;
+import org.ccbcj.wallet.Wallet;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -50,7 +50,7 @@ public class SendMoneyController {
 
     // Called by FXMLLoader
     public void initialize() {
-        Coin balance = Main.colx.wallet().getBalance();
+        Coin balance = Main.ccbc.wallet().getBalance();
         checkState(!balance.isZero());
         new BitcoinAddressValidator(Main.params, address, sendBtn);
         new TextFieldValidator(amountEdit, text ->
@@ -68,12 +68,12 @@ public class SendMoneyController {
             Coin amount = Coin.parseCoin(amountEdit.getText());
             Address destination = Address.fromBase58(Main.params, address.getText());
             SendRequest req;
-            if (amount.equals(Main.colx.wallet().getBalance()))
+            if (amount.equals(Main.ccbc.wallet().getBalance()))
                 req = SendRequest.emptyWallet(destination);
             else
                 req = SendRequest.to(destination, amount);
             req.aesKey = aesKey;
-            sendResult = Main.colx.wallet().sendCoins(req);
+            sendResult = Main.ccbc.wallet().sendCoins(req);
             Futures.addCallback(sendResult.broadcastComplete, new FutureCallback<Transaction>() {
                 @Override
                 public void onSuccess(@Nullable Transaction result) {
@@ -83,7 +83,7 @@ public class SendMoneyController {
 
                 @Override
                 public void onFailure(Throwable t) {
-                    // We died trying to empty the colx.
+                    // We died trying to empty the ccbc.
                     crashAlert(t);
                 }
             });
@@ -97,8 +97,8 @@ public class SendMoneyController {
             ((HBox)btcLabel.getParent()).getChildren().remove(btcLabel);
             updateTitleForBroadcast();
         } catch (InsufficientMoneyException e) {
-            informationalAlert("Could not empty the colx",
-                    "You may have too little money left in the colx to make a transaction.");
+            informationalAlert("Could not empty the ccbc",
+                    "You may have too little money left in the ccbc to make a transaction.");
             overlayUI.done();
         } catch (ECKey.KeyIsEncryptedException e) {
             askForPasswordAndRetry();

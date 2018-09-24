@@ -14,10 +14,10 @@
 
 package wallettemplate.utils;
 
-import org.colxj.core.listeners.DownloadProgressTracker;
-import org.colxj.wallet.Wallet;
-import org.colxj.wallet.listeners.WalletChangeEventListener;
-import org.colxj.core.*;
+import org.ccbcj.core.listeners.DownloadProgressTracker;
+import org.ccbcj.wallet.Wallet;
+import org.ccbcj.wallet.listeners.WalletChangeEventListener;
+import org.ccbcj.core.*;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -27,7 +27,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import java.util.Date;
 
 /**
- * A class that exposes relevant colx stuff as JavaFX bindable properties.
+ * A class that exposes relevant ccbc stuff as JavaFX bindable properties.
  */
 public class BitcoinUIModel {
     private SimpleObjectProperty<Address> address = new SimpleObjectProperty<>();

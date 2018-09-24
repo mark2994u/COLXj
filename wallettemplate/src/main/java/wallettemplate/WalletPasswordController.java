@@ -15,7 +15,7 @@
 package wallettemplate;
 
 import javafx.application.Platform;
-import org.colxj.crypto.KeyCrypterScrypt;
+import org.ccbcj.crypto.KeyCrypterScrypt;
 import com.google.common.primitives.Longs;
 import com.google.protobuf.ByteString;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -39,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static wallettemplate.utils.GuiUtils.*;
 
 /**
- * User interface for entering a password on demand, e.g. to send money. Also used when encrypting a colx. Shows a
+ * User interface for entering a password on demand, e.g. to send money. Also used when encrypting a ccbc. Shows a
  * progress meter as we scrypt the password.
  */
 public class WalletPasswordController {
@@ -68,13 +68,13 @@ public class WalletPasswordController {
             return;
         }
 
-        final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) Main.colx.wallet().getKeyCrypter();
-        checkNotNull(keyCrypter);   // We should never arrive at this GUI if the colx isn't actually encrypted.
+        final KeyCrypterScrypt keyCrypter = (KeyCrypterScrypt) Main.ccbc.wallet().getKeyCrypter();
+        checkNotNull(keyCrypter);   // We should never arrive at this GUI if the ccbc isn't actually encrypted.
         KeyDerivationTasks tasks = new KeyDerivationTasks(keyCrypter, password, getTargetTime()) {
             @Override
             protected final void onFinish(KeyParameter aesKey, int timeTakenMsec) {
                 checkGuiThread();
-                if (Main.colx.wallet().checkAESKey(aesKey)) {
+                if (Main.ccbc.wallet().checkAESKey(aesKey)) {
                     WalletPasswordController.this.aesKey.set(aesKey);
                 } else {
                     log.warn("User entered incorrect password");
@@ -108,14 +108,14 @@ public class WalletPasswordController {
 
     public static final String TAG = WalletPasswordController.class.getName() + ".target-time";
 
-    // Writes the given time to the colx as a tag so we can find it again in this class.
+    // Writes the given time to the ccbc as a tag so we can find it again in this class.
     public static void setTargetTime(Duration targetTime) {
         ByteString bytes = ByteString.copyFrom(Longs.toByteArray(targetTime.toMillis()));
-        Main.colx.wallet().setTag(TAG, bytes);
+        Main.ccbc.wallet().setTag(TAG, bytes);
     }
 
     // Reads target time or throws if not set yet (should never happen).
     public static Duration getTargetTime() throws IllegalArgumentException {
-        return Duration.ofMillis(Longs.fromByteArray(Main.colx.wallet().getTag(TAG).toByteArray()));
+        return Duration.ofMillis(Longs.fromByteArray(Main.ccbc.wallet().getTag(TAG).toByteArray()));
     }
 }

@@ -16,12 +16,12 @@ package wallettemplate;
 
 import com.google.common.util.concurrent.*;
 import javafx.scene.input.*;
-import org.colxj.core.NetworkParameters;
-import org.colxj.kits.WalletAppKit;
-import org.colxj.params.*;
-import org.colxj.utils.BriefLogFormatter;
-import org.colxj.utils.Threading;
-import org.colxj.wallet.DeterministicSeed;
+import org.ccbcj.core.NetworkParameters;
+import org.ccbcj.kits.WalletAppKit;
+import org.ccbcj.params.*;
+import org.ccbcj.utils.BriefLogFormatter;
+import org.ccbcj.utils.Threading;
+import org.ccbcj.wallet.DeterministicSeed;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -46,7 +46,7 @@ public class Main extends Application {
     public static NetworkParameters params = null;
     public static final String APP_NAME = "WalletTemplate";
 
-    public static WalletAppKit colx;
+    public static WalletAppKit ccbc;
     public static Main instance;
 
     private StackPane uiStack;
@@ -74,7 +74,7 @@ public class Main extends Application {
     @Override
     public void start(Stage mainWindow) throws Exception {
         try {
-            // parse command line parameters and initialize colx
+            // parse command line parameters and initialize ccbc
             // --testnet=1
             if (getCmdParam("testnet", "0").equals("1"))
                 params = TestNet3Params.get();
@@ -121,7 +121,7 @@ public class Main extends Application {
 
         // Make log output concise.
         BriefLogFormatter.init();
-        // Tell colxj to run event handlers on the JavaFX UI thread. This keeps things simple and means
+        // Tell ccbcj to run event handlers on the JavaFX UI thread. This keeps things simple and means
         // we cannot forget to switch threads when adding event handlers. Unfortunately, the DownloadListener
         // we give to the app kit is currently an exception and runs on a library thread. It'll get fixed in
         // a future version.
@@ -129,7 +129,7 @@ public class Main extends Application {
         // Create the app kit. It won't do any heavyweight initialization until after we start it.
         setupWalletKit(null);
 
-        if (colx.isChainFileLocked()) {
+        if (ccbc.isChainFileLocked()) {
             informationalAlert("Already running", "This application is already running and cannot be started twice.");
             Platform.exit();
             return;
@@ -139,35 +139,35 @@ public class Main extends Application {
 
         WalletSetPasswordController.estimateKeyDerivationTimeMsec();
 
-        colx.addListener(new Service.Listener() {
+        ccbc.addListener(new Service.Listener() {
             @Override
             public void failed(Service.State from, Throwable failure) {
                 GuiUtils.crashAlert(failure);
             }
         }, Platform::runLater);
-        colx.startAsync();
+        ccbc.startAsync();
 
-        scene.getAccelerators().put(KeyCombination.valueOf("Shortcut+F"), () -> colx.peerGroup().getDownloadPeer().close());
+        scene.getAccelerators().put(KeyCombination.valueOf("Shortcut+F"), () -> ccbc.peerGroup().getDownloadPeer().close());
     }
 
     public void setupWalletKit(@Nullable DeterministicSeed seed) {
         // If seed is non-null it means we are restoring from backup.
-        colx = new WalletAppKit(params, new File("."), getWalletFileName()) {
+        ccbc = new WalletAppKit(params, new File("."), getWalletFileName()) {
             @Override
             protected void onSetupCompleted() {
                 // Don't make the user wait for confirmations for now, as the intention is they're sending it
                 // their own money!
-                colx.wallet().allowSpendingUnconfirmedTransactions();
+                ccbc.wallet().allowSpendingUnconfirmedTransactions();
                 Platform.runLater(controller::onBitcoinSetup);
             }
         };
 
-        colx.setDownloadListener(controller.progressBarUpdater())
+        ccbc.setDownloadListener(controller.progressBarUpdater())
                .setBlockingStartup(false)
                .setUserAgent(APP_NAME, "1.0");
 
         if (seed != null)
-            colx.restoreWalletFromSeed(seed);
+            ccbc.restoreWalletFromSeed(seed);
     }
 
     private Node stopClickPane = new Pane();
@@ -261,8 +261,8 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
-        colx.stopAsync();
-        colx.awaitTerminated();
+        ccbc.stopAsync();
+        ccbc.awaitTerminated();
         // Forcibly terminate the JVM because Orchid likes to spew non-daemon threads everywhere.
         Runtime.getRuntime().exit(0);
     }

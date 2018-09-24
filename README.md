@@ -1,6 +1,6 @@
-### Welcome to colx
+### Welcome to ccbc
 
-The colxj library is a Java implementation of the COLX protocol, which allows it to maintain a wallet and send/receive transactions without needing a local copy of COLX Core. It comes with full documentation and some example apps showing how to use it.
+The ccbcj library is a Java implementation of the CCBC protocol, which allows it to maintain a wallet and send/receive transactions without needing a local copy of CCBC Core. It comes with full documentation and some example apps showing how to use it.
 
 ### Technologies
 
@@ -45,13 +45,13 @@ These are found in the `examples` module.
 
 #### Forwarding service
 
-This will download the block chain and eventually print a COLX address that it has generated.
+This will download the block chain and eventually print a CCBC address that it has generated.
 
 If you send coins to that address, it will forward them on to the address you specified.
 
 ```
   cd examples
-  mvn exec:java -Dexec.mainClass=org.colxj.examples.ForwardingService -Dexec.args="<insert a colx address here>"
+  mvn exec:java -Dexec.mainClass=org.ccbcj.examples.ForwardingService -Dexec.args="<insert a ccbc address here>"
 
 ```
 
