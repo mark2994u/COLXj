@@ -69,7 +69,7 @@ public class CoinDefinition {
     public static final int PROTOCOL_VERSION = 70002;          //version.h PROTOCOL_VERSION
     public static final int MIN_PROTOCOL_VERSION = 70002;        //version.h MIN_PROTO_VERSION
 
-    public static final int BLOCK_CURRENTVERSION = 5;   //CBlock::CURRENT_VERSION
+    public static final int BLOCK_CURRENTVERSION = 1;   //CBlock::CURRENT_VERSION
     public static final int MAX_BLOCK_SIZE = 2 * 1000 * 1000;
 
     public static final boolean supportsBloomFiltering = true; //Requires PROTOCOL_VERSION 70000 in the client
